@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
+/**
+ * Service d'envoi de SMS.
+ * Utilise l'API Orange SMS Senegal
+ */
 @Injectable()
 export class SmsService {
 
@@ -11,28 +15,44 @@ export class SmsService {
     console.log("SMS Service connected");
    }
 
-   /**
-    * Récupère un Access Token pour le Gateway SMS - Orange Senegal
-    * @param client_id Id de connection client
-    * @param client_secret Mot de passe de connection client
-    */
-   getAToken(client_id:string, client_secret:string):void{
-     let url = "https://api.orange.com/oauth/v2/token";
-     let _client_id = client_id;
-     let _client_secr = client_secret;
-     let authorization_header = "Basic " + btoa(client_id + ":" + client_secret)
-     let requestHeaders = new Headers({"Authorization" : authorization_header});
-     requestHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-     let options = new RequestOptions({ headers: requestHeaders });
+  /**
+  * Récupère un Access Token
+  * Cette fonction requiert une connexion sécurisée (HTTPS)
+  * @param client_id Id de connection client
+  * @param client_secret Mot de passe de connection client
+  */
+  getAToken(client_id:string, client_secret:string){
+    let url = "https://api.orange.com/oauth/v2/token";
+    let _client_id = client_id;
+    let _client_secr = client_secret;
+    let authorization_header = "Basic " + btoa(client_id + ":" + client_secret)
+    let requestHeaders = new Headers({"Authorization" : authorization_header});
+    requestHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    let options = new RequestOptions({ headers: requestHeaders });
+    let _accessToken:any;
+    
+    const data = JSON.stringify({ 'grant_type':"client_credentials"});
 
-     const data = JSON.stringify({ 'grant_type':"client_credentials"});
+    this.http.post(url, data, options)
+    .map(response => response.json())
+    .subscribe(accessToken =>{ _accessToken = accessToken; });
 
-     let retour = this.http.post(url, data, options)
-      .map(response => response.json());
+    return _accessToken;
+  }
 
-      console.log(retour.subscribe());
+  /**
+   * Retourne le contrat SMS avec le crédit SMS restant.
+   * @param accessToken Token d'accès valide pour l'exécution de la requête
+   */
+  getContrat(accessToken:string):Observable<any>{
+    let url = "https://api.orange.com//sms/admin/v1/contracts";
+    let authorization_header = "Bearer " + accessToken;
+    let requestHeaders = new Headers({"Authorization" : authorization_header});
+    requestHeaders.append("Content-Type", "application/json");
+    let options = new RequestOptions({ headers: requestHeaders });
 
-      //return retour;
-   }
-
+    return this.http.get(url, options)
+    .map(response => response.json())
+    .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
 }

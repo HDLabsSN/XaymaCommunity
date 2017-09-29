@@ -2,15 +2,46 @@
 body{
     background: #e6ecf0;
 }
-.card{
-    margin:0.8rem auto;
-}
+.xayma-container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (min-width: 768px) {
+    .xayma-container {
+      width: 750px;
+    }
+  }
+  @media (min-width: 992px) {
+    .xayma-container {
+      width: 970px;
+    }
+  }
+  @media (min-width: 1300px) {
+    .xayma-container {
+      width: 1266px;
+    }
+  }
+
+
 .xayma-content-space{
     margin:0.8rem auto;
     padding: 0.5rem 0.8rem;
+    min-height: 400px;
     border: 1px solid gainsboro;
     background: #fff;
     border-radius: 3px;
+}
+.xayma-flex{
+  display: flex!important;
+}
+
+.card{
+  margin:0.8rem auto;
+}
+.card-block{
+  padding: 0.8rem;
 }
 h3.display-4{
     font-size: 2rem!important;;

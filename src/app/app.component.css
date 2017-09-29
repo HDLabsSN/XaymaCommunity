@@ -3,9 +3,6 @@
     height: 100px;
     background: silver;
 }
-.card-block{
-    padding: 0.8rem;
-}
 .card-block .nav.flex-column .nav-link{
     padding-left: inherit;
 }

@@ -8,19 +8,18 @@ import { DataService } from "../../services/data.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  contratSMS:any;
+  creditSMS:number;
 
   constructor(private SMS:SmsService, private Data:DataService){
       }
 
   ngOnInit() {
-    let clientId = "waEz9srw97eJNzRMSYzHB2IGGjmNkAqb";
-    let clientSc = "y4aLSeMuqtC36CPe";
-
-    this.SMS.getAToken(clientId, clientSc);
-    /*.subscribe((accessToken) => {
-      console.log("Le token récupéré est :");
-      console.log(accessToken);
-    })*/
+    this.contratSMS = this.SMS.getContrat("a23tlrQdpSwuO4HbN5DamNNYl6bN")
+        .subscribe(reponse =>{ 
+          this.contratSMS = reponse.partnerContracts.contracts[0].serviceContracts[0];
+          this.creditSMS = this.contratSMS.availableUnits;
+          console.log(this.creditSMS);
+    });
   }
-
 }
