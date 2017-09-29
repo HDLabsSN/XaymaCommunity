@@ -1,0 +1,57 @@
+<h3 class="display-4">Membres</h3>
+<hr>
+
+<div class="col-md-12" style="margin:0.5rem 0;">
+    <form class="">
+      <div class="form-group row">
+        <div class="col-md-3">Mode d'affichage</div>
+        <div class="col-md-6">
+          <label class="custom-control custom-radio mb-2 mr-sm-2 mb-sm-0">
+              <input type="radio" class="custom-control-input" name="modeAffichage" [(ngModel)]="modePagination" [value]="false" >
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Continu</span>
+          </label>
+          <label class="custom-control custom-radio mb-2 mr-sm-2 mb-sm-0">
+              <input type="radio" class="custom-control-input" name=modeAffichage [(ngModel)]="modePagination" [value]="true" >
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Pagination</span>
+          </label>
+          
+        </div>
+        <div class="col-md-3" *ngIf="modePagination">
+          <select class="custom-select mb-2 mr-sm-2 mb-sm-0" >
+              <option selected>Eléments</option>
+              <option value="1">50</option>
+              <option value="2">100</option>
+              <option value="3">200+</option>
+          </select>
+        </div>
+      </div>
+    </form>
+</div>
+<a href="" class="btn btn-sm btn-primary">Nouveau</a>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Prénom</th>
+      <th>Nom</th>
+      <th>Section</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let User of Users" >
+      <td> {{User.id}} </td>
+      <td> {{User.name}} </td>
+      <td> {{User.username}} </td>
+      <td> {{User.address.city}} </td>
+      <td>
+        <a href="" class="btn-link">M</a>
+        <a href="" class=" btn-link">D</a>
+        <a href="" class=" btn-link">E</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

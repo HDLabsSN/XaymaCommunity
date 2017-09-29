@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    background: #e6ecf0;
+}
+.card{
+    margin:0.8rem auto;
+}
+.xayma-content-space{
+    margin:0.8rem auto;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid gainsboro;
+    background: #fff;
+    border-radius: 3px;
+}
+h3.display-4{
+    font-size: 2rem!important;;
+}
