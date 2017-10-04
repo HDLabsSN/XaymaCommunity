@@ -1,0 +1,7 @@
+.input-group-addon{
+    background:#fff;
+    min-width: 4.5rem;
+}
+.input-group-addon + input[type='text'], .input-group-addon + input[type='tel']{
+    border-left:none;
+}

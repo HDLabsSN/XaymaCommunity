@@ -49,10 +49,42 @@ export class SmsService {
     let authorization_header = "Bearer " + accessToken;
     let requestHeaders = new Headers({"Authorization" : authorization_header});
     requestHeaders.append("Content-Type", "application/json");
-    let options = new RequestOptions({ headers: requestHeaders });
+    let options = new RequestOptions({ headers: requestHeaders });    
 
     return this.http.get(url, options)
     .map(response => response.json())
     .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  /**
+   * Envoie un SMS
+   * @param accessToken Token d'accès valide pour l'exécution de la requête
+   * @param senderName Nom de l'émetteur du SMS
+   * @param receiverNumber Numéro du destinataire
+   * @param message Contenu du SMS
+   */
+  sendSMS(accessToken:string, senderName:string, receiverNumber:string, message:string):Observable<any>{
+    let senderAddress = encodeURI("tel:+22100000000");
+    let url = "https://api.orange.com/smsmessaging/v1/outbound/"+senderAddress+"/requests";
+    let authorization_header = "Bearer " + accessToken;
+    let requestHeaders = new Headers({"Authorization" : authorization_header});
+    requestHeaders.append("Content-Type", "application/json");
+    let options = new RequestOptions({ headers: requestHeaders });
+    const pre_formatted_data =  {"outboundSMSMessageRequest":
+                    {
+                      "address": "tel:"+receiverNumber,
+                      "senderAddress":"tel:+22100000000",
+                      "senderName": encodeURI(senderName),
+                      "outboundSMSTextMessage":{
+                        "message": message
+                      }
+                    }
+                  }
+    const data = JSON.stringify(pre_formatted_data);
+    console.log(data);
+  
+    return this.http.post(url, data, options)
+      .map(response => response.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
 }

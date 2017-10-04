@@ -1,3 +1,66 @@
-<div class="xayma-content-space ">
-  message-new works!
+<div class="row">
+  <section class="xayma-content-space col-md-8">
+    <h3 class="display-4">Nouveau SMS</h3>
+    <hr>
+
+    <div *ngIf="creditSMS == 0" class="alert alert-danger">
+      Vous n'avez plus d'unités SMS disponibles!
+    </div>
+
+    <form #smsForm="ngForm" (ngSubmit)="sendMessage()">
+      <div *ngIf="sendlist.invalid && (sendlist.dirty || sendlist.touched)" class="text-danger">
+          <small>Veuillez renseigner un numéro de téléphone au bon format</small>
+      </div>
+      <div class="input-group form-group">
+        <span class="input-group-addon">A :</span>
+        <input type="tel" [(ngModel)]="message.sendlist" name="sendlist" #sendlist="ngModel" class="form-control" required minlength="13" />
+      </div>
+      
+      <div *ngIf="sender.invalid && (sender.dirty || sender.touched)" class="text-danger">
+          <small>Veuillez renseigner un sender au bon format</small>
+      </div>
+      <div class="form-group input-group">
+          <span class="input-group-addon">De :</span>
+          <input type="text" [(ngModel)]="message.sender" name="sender" #sender="ngModel" class="form-control" required minlength="4"/>
+      </div>
+
+      <div class="form-group input-group">
+          <span class="input-group-addon">Sujet :</span>
+          <input type="text" [(ngModel)]="message.subject" name="subject" class="form-control" />
+      </div>
+
+      <div *ngIf="content.invalid && (content.dirty || content.touched)" class="text-danger">
+          <small>Le contenu de votre message est trop petit</small>
+      </div>
+      <div class="form-group">
+        <label for="Message">Message</label>
+        <textarea [(ngModel)]="message.content" name="content" #content="ngModel" class="form-control" rows="10" required minlength="15"></textarea>
+        <small class="text-muted text-right"> {{message.content.length}} Caractères</small>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" class="btn btn-sm btn btn-outline-success" [disabled]="smsForm.form.invalid || disclaimer" >Envoyer</button>
+        <span *ngIf="disclaimer" class="text-danger">Vous n'avez plus de crédit SMS !</span>
+      </div>
+    </form>
+  </section>
+
+  <aside class="col-md-4">
+    <div class="card">
+      <div class="card-block">
+        <h5 class="display-4">Contacts</h5>
+        <hr>
+        <ul class="list-unstyled">
+          <li *ngFor="let membre of membres" >
+            <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+              <input type="checkbox" class="custom-control-input" (click)="toggleSendList(membre.phone)">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">{{membre.name}} {{membre.username}}</span>
+            </label>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </aside>
 </div>

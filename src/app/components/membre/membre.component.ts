@@ -18,7 +18,6 @@ export class MembreComponent implements OnInit {
     this.dataService.getUsers().subscribe((users) =>{
       this.Users = users;
     });
-
   }
 }
 
